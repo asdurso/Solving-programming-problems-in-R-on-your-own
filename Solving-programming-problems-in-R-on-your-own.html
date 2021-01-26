@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="AS d’Urso" />
+  <meta name="dcterms.date" content="2021-01-25" />
+  <title>Solving Programming Problems in R on Your Own</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="Solving-programming-problems-in-R-on-your-own_files/reveal.js-3.3.0.1/css/reveal.css"/>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="Solving-programming-problems-in-R-on-your-own_files/reveal.js-3.3.0.1/css/theme/serif.css" id="theme">
+
+
+  <!-- some tweaks to reveal css -->
+  <style type="text/css">
+    .reveal h1 { font-size: 2.0em; }
+    .reveal h2 { font-size: 1.5em;  }
+    .reveal h3 { font-size: 1.25em;	}
+    .reveal h4 { font-size: 1em;	}
+
+    .reveal .slides>section,
+    .reveal .slides>section>section {
+      padding: 0px 0px;
+    }
+
+
+
+    .reveal table {
+      border-width: 1px;
+      border-spacing: 2px;
+      border-style: dotted;
+      border-color: gray;
+      border-collapse: collapse;
+      font-size: 0.7em;
+    }
+
+    .reveal table th {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      font-weight: bold;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+    .reveal table td {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+
+  </style>
+
+    <style type="text/css">code{white-space: pre;}</style>
+
+    <link rel="stylesheet" href="styles.css"/>
+
+<!-- Printing and PDF exports -->
+<script id="paper-css" type="application/dynamic-css">
+
+/* Default Print Stylesheet Template
+   by Rob Glazebrook of CSSnewbie.com
+   Last Updated: June 4, 2008
+
+   Feel free (nay, compelled) to edit, append, and
+   manipulate this file as you see fit. */
+
+
+@media print {
+
+	/* SECTION 1: Set default width, margin, float, and
+	   background. This prevents elements from extending
+	   beyond the edge of the printed page, and prevents
+	   unnecessary background images from printing */
+	html {
+		background: #fff;
+		width: auto;
+		height: auto;
+		overflow: visible;
+	}
+	body {
+		background: #fff;
+		font-size: 20pt;
+		width: auto;
+		height: auto;
+		border: 0;
+		margin: 0 5%;
+		padding: 0;
+		overflow: visible;
+		float: none !important;
+	}
+
+	/* SECTION 2: Remove any elements not needed in print.
+	   This would include navigation, ads, sidebars, etc. */
+	.nestedarrow,
+	.controls,
+	.fork-reveal,
+	.share-reveal,
+	.state-background,
+	.reveal .progress,
+	.reveal .backgrounds {
+		display: none !important;
+	}
+
+	/* SECTION 3: Set body font face, size, and color.
+	   Consider using a serif font for readability. */
+	body, p, td, li, div {
+		font-size: 20pt!important;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		color: #000;
+	}
+
+	/* SECTION 4: Set heading font face, sizes, and color.
+	   Differentiate your headings from your body text.
+	   Perhaps use a large sans-serif for distinction. */
+	h1,h2,h3,h4,h5,h6 {
+		color: #000!important;
+		height: auto;
+		line-height: normal;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		text-shadow: 0 0 0 #000 !important;
+		text-align: left;
+		letter-spacing: normal;
+	}
+	/* Need to reduce the size of the fonts for printing */
+	h1 { font-size: 28pt !important;  }
+	h2 { font-size: 24pt !important; }
+	h3 { font-size: 22pt !important; }
+	h4 { font-size: 22pt !important; font-variant: small-caps; }
+	h5 { font-size: 21pt !important; }
+	h6 { font-size: 20pt !important; font-style: italic; }
+
+	/* SECTION 5: Make hyperlinks more usable.
+	   Ensure links are underlined, and consider appending
+	   the URL to the end of the link for usability. */
+	a:link,
+	a:visited {
+		color: #000 !important;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	/*
+	.reveal a:link:after,
+	.reveal a:visited:after {
+		content: " (" attr(href) ") ";
+		color: #222 !important;
+		font-size: 90%;
+	}
+	*/
+
+
+	/* SECTION 6: more reveal.js specific additions by @skypanther */
+	ul, ol, div, p {
+		visibility: visible;
+		position: static;
+		width: auto;
+		height: auto;
+		display: block;
+		overflow: visible;
+		margin: 0;
+		text-align: left !important;
+	}
+	.reveal pre,
+	.reveal table {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.reveal pre code {
+		padding: 20px;
+		border: 1px solid #ddd;
+	}
+	.reveal blockquote {
+		margin: 20px 0;
+	}
+	.reveal .slides {
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 0 !important;
+		zoom: 1 !important;
+
+		overflow: visible !important;
+		display: block !important;
+
+		text-align: left !important;
+		-webkit-perspective: none;
+		   -moz-perspective: none;
+		    -ms-perspective: none;
+		        perspective: none;
+
+		-webkit-perspective-origin: 50% 50%;
+		   -moz-perspective-origin: 50% 50%;
+		    -ms-perspective-origin: 50% 50%;
+		        perspective-origin: 50% 50%;
+	}
+	.reveal .slides section {
+		visibility: visible !important;
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+		display: block !important;
+		overflow: visible !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 60px 20px !important;
+		z-index: auto !important;
+
+		opacity: 1 !important;
+
+		page-break-after: always !important;
+
+		-webkit-transform-style: flat !important;
+		   -moz-transform-style: flat !important;
+		    -ms-transform-style: flat !important;
+		        transform-style: flat !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+
+		-webkit-transition: none !important;
+		   -moz-transition: none !important;
+		    -ms-transition: none !important;
+		        transition: none !important;
+	}
+	.reveal .slides section.stack {
+		padding: 0 !important;
+	}
+	.reveal section:last-of-type {
+		page-break-after: avoid !important;
+	}
+	.reveal section .fragment {
+		opacity: 1 !important;
+		visibility: visible !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+	}
+	.reveal section img {
+		display: block;
+		margin: 15px 0px;
+		background: rgba(255,255,255,1);
+		border: 1px solid #666;
+		box-shadow: none;
+	}
+
+	.reveal section small {
+		font-size: 0.8em;
+	}
+
+}  
+</script>
+
+
+<script id="pdf-css" type="application/dynamic-css">
+    
+/**
+ * This stylesheet is used to print reveal.js
+ * presentations to PDF.
+ *
+ * https://github.com/hakimel/reveal.js#pdf-export
+ */
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+
+body {
+	margin: 0 auto !important;
+	border: 0;
+	padding: 0;
+	float: none !important;
+	overflow: visible;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+/* Remove any elements not needed in print. */
+.nestedarrow,
+.reveal .controls,
+.reveal .progress,
+.reveal .playback,
+.reveal.overview,
+.fork-reveal,
+.share-reveal,
+.state-background {
+	display: none !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-shadow: 0 0 0 #000 !important;
+}
+
+.reveal pre code {
+	overflow: hidden !important;
+	font-family: Courier, 'Courier New', monospace !important;
+}
+
+ul, ol, div, p {
+	visibility: visible;
+	position: static;
+	width: auto;
+	height: auto;
+	display: block;
+	overflow: visible;
+	margin: auto;
+}
+.reveal {
+	width: auto !important;
+	height: auto !important;
+	overflow: hidden !important;
+}
+.reveal .slides {
+	position: static;
+	width: 100%;
+	height: auto;
+
+	left: auto;
+	top: auto;
+	margin: 0 !important;
+	padding: 0 !important;
+
+	overflow: visible;
+	display: block;
+
+	-webkit-perspective: none;
+	   -moz-perspective: none;
+	    -ms-perspective: none;
+	        perspective: none;
+
+	-webkit-perspective-origin: 50% 50%; /* there isn't a none/auto value but 50-50 is the default */
+	   -moz-perspective-origin: 50% 50%;
+	    -ms-perspective-origin: 50% 50%;
+	        perspective-origin: 50% 50%;
+}
+
+.reveal .slides section {
+	page-break-after: always !important;
+
+	visibility: visible !important;
+	position: relative !important;
+	display: block !important;
+	position: relative !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+	box-sizing: border-box !important;
+	min-height: 1px;
+
+	opacity: 1 !important;
+
+	-webkit-transform-style: flat !important;
+	   -moz-transform-style: flat !important;
+	    -ms-transform-style: flat !important;
+	        transform-style: flat !important;
+
+	-webkit-transform: none !important;
+	   -moz-transform: none !important;
+	    -ms-transform: none !important;
+	        transform: none !important;
+}
+
+.reveal section.stack {
+	margin: 0 !important;
+	padding: 0 !important;
+	page-break-after: avoid !important;
+	height: auto !important;
+	min-height: auto !important;
+}
+
+.reveal img {
+	box-shadow: none;
+}
+
+.reveal .roll {
+	overflow: visible;
+	line-height: 1em;
+}
+
+/* Slide backgrounds are placed inside of their slide when exporting to PDF */
+.reveal section .slide-background {
+	display: block !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: -1;
+}
+
+/* All elements should be above the slide-background */
+.reveal section>* {
+	position: relative;
+	z-index: 1;
+}
+
+/* Display slide speaker notes when 'showNotes' is enabled */
+.reveal .speaker-notes-pdf {
+	display: block;
+	width: 100%;
+	max-height: none;
+	left: auto;
+	top: auto;
+	z-index: 100;
+}
+
+/* Display slide numbers when 'slideNumber' is enabled */
+.reveal .slide-number-pdf {
+	display: block;
+	position: absolute;
+	font-size: 14px;
+}
+
+</script>
+
+
+<script>
+var style = document.createElement( 'style' );
+style.type = 'text/css';
+var style_script_id = window.location.search.match( /print-pdf/gi ) ? 'pdf-css' : 'paper-css';
+var style_script = document.getElementById(style_script_id).text;
+style.innerHTML = style_script;
+document.getElementsByTagName('head')[0].appendChild(style);
+</script>
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Solving Programming Problems in R on Your Own</h1>
+    <h2 class="author">AS d’Urso</h2>
+    <h3 class="date"><small>2021-01-25</small></h3>
+</section>
+
+<section id="introduction" class="title-slide slide level1"><h1>Introduction</h1><style type="text/css">
+  .reveal p {
+    text-align: left;
+  }
+  .reveal ul {
+    display: block;
+  }
+  .reveal ol {
+    display: block;
+  }  
+</style>
+<ul>
+<li><p>Part I: Resources</p></li>
+<li><p>Part II: Steps to Solving Problems</p></li>
+<li><p>Part III: Common Errors</p></li>
+<li><p>Part IV: Practice</p></li>
+</ul></section>
+<section><section id="part-i-resources" class="title-slide slide level1"><h1>Part I: Resources</h1><ol type="1">
+<li>Help files</li>
+<li>Cheatsheets</li>
+<li>Googling/Forums</li>
+<li>Phone a Friend</li>
+</ol></section><section id="help-files" class="slide level2">
+<h2>1) Help Files</h2>
+<ul>
+<li>Use <code>?</code> before a function in order to read about it</li>
+<li>let’s try it <code>?principal</code></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>?principal</span></code></pre></div>
+</section><section id="help-files-1" class="slide level2">
+<h2>1) Help Files</h2>
+<p>Oh no! Why didn’t it work?</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>?principal</span></code></pre></div>
+<pre><code>## No documentation for &#39;principal&#39; in specified packages and libraries:
+## you could try &#39;??principal&#39;</code></pre>
+<p><font size="6"></p>
+<ul>
+<li class="fragment">Unfortunately, if you try to Google this error message, you won’t find a lot of helpful results. This is because the error in this case is rather simple: we have not loaded the package associated with this particular function we are interesting in learning more about.</li>
+</ul>
+<p></font></p>
+</section><section id="help-files-2" class="slide level2">
+<h2>1) Help Files</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>?psych<span class="op">::</span>principal</span></code></pre></div>
+<center>
+<img data-src="Figures/help%20file.png" width="800" alt="helpfile" />
+</center>
+</section><section id="working-with-help-files" class="slide level2">
+<h2>1) Working with Help Files</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>ex_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="ot">NA</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">mean</span>(ex_<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+</section><section id="working-with-help-files-1" class="slide level2">
+<h2>1) Working with Help Files</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>?mean </span></code></pre></div>
+<font size = "5"> <em>Note: this works without loading anything because it is in base R</em> </font size>
+<aside class="notes">
+<ul>
+<li>Now, we can look through the help file. The format is always the same. At the top left-hand side, it gives you the function name with the associated package in brackets. Here, we see <code>mean{base}</code></li>
+<li>The description gives context about what the function does</li>
+<li>The usage tells you the default arguments and defines the arguments
+<ul>
+<li>Here, the first argument is x (an R object), trim = 0, and na.rm = F)</li>
+<li>This can be a little confusing to read through, but keep in mind, you want to know what your defaults are</li>
+</ul></li>
+<li>Take a look at <code>na.rm</code>, unless you specifically tell R to remove missing values, it will give you a mean of NA if you have a vector with missing values</li>
+<li>Lastly, looks through the examples</li>
+</ul>
+</aside>
+</section><section id="cheatsheets" class="slide level2">
+<h2>2) Cheatsheets</h2>
+<center>
+<a href="https://rstudio.com/resources/cheatsheets/">R Studio Cheatsheets</a>
+</center>
+<p><em>And I have added a few in the ‘Resources’ folder for this workshop</em></p>
+<center>
+<img data-src="Figures/example%20ggplot%20cheatsheet.png" width="600" alt="ggplot cheatsheet &gt;&lt;" />
+</center>
+</section><section id="googlingforums" class="slide level2">
+<h2>3) Googling/Forums</h2>
+<p>Pick Google results from these website first:</p>
+<ul>
+<li><a href="https://stackoverflow.com/">Stack Overflow</a></li>
+<li><a href="https://stackexchange.com/">Stack Exchange</a></li>
+<li><a href="https://www.statmethods.net/">Quick R</a></li>
+</ul>
+</section><section id="phone-a-friend" class="slide level2">
+<h2>4) Phone a Friend</h2>
+<ul>
+<li>Colleagues</li>
+<li>Us: <a href="http://bit.ly/rcs_consult">bit.ly/rcs_consult</a></li>
+</ul>
+</section></section>
+<section><section id="part-ii-steps-to-solving-problems" class="title-slide slide level1"><h1>Part II: Steps to Solving Problems</h1><ol type="1">
+<li>Google</li>
+<li>Find (Potential) Solution</li>
+<li>Help File</li>
+<li>Code (Repeat 1 ~ 4 as needed)</li>
+<li>Feel Proud!</li>
+</ol></section><section id="mtcars" class="slide level2">
+<h2><code>mtcars</code></h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">library</span>(tidyverse) <span class="co"># Load tidyverse to follow along</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>mtcars <span class="co"># Let&#39;s look at our data</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>?mtcars <span class="co"># More information about the dataset</span></span></code></pre></div>
+<pre><code>##                    mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360        14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D         24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230          22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280          19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4</code></pre>
+<pre><code>##  [1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
+## [11] &quot;carb&quot;</code></pre>
+</section><section id="mtcars-1" class="slide level2">
+<h2><code>mtcars</code></h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">names</span>(mtcars) <span class="co"># And let&#39;s look at the variables</span></span></code></pre></div>
+<pre><code>##  [1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
+## [11] &quot;carb&quot;</code></pre>
+</section><section id="if-you-have-no-idea-where-to-start" class="slide level2">
+<h2>If you have no idea where to start:<br />
+</h2>
+<center>
+Step 1: Google
+</center>
+<p>If you are working on something in R, and you have no idea where to start, it’s best to ask Google. (Then why did I spend all that time with help files? You will see!)</p>
+<ul>
+<li class="fragment"><strong>Practice:</strong> How can we rename multiple variables in this dataset?</li>
+<li class="fragment"><strong>Tips:</strong> Try using precise, technical language
+<ul>
+<li class="fragment">Instead of <em>“change the name of a variable in R”</em> try <em>“rename columns in R”</em></li>
+<li class="fragment">Instead of <em>“how to make the writing in the center on rmd”</em> try <em>“center alignment/justify text rmd”</em></li>
+</ul></li>
+</ul>
+<aside class="notes">
+Google how to do this and copy/paste example code from online or a function that could accomplish this task in the chat!
+</aside>
+</section><section id="step-2-find-a-solution-you-feel-you-can-tackle" class="slide level2">
+<h2>Step 2: Find a solution you feel you can tackle</h2>
+<p>This might take a few tries, but I’ll show you what I liked</p>
+<ul>
+<li class="fragment"><a href="https://stackoverflow.com/questions/20987295/rename-multiple-columns-by-names">Stack Overflow</a><br />
+</li>
+<li class="fragment"><code>rename</code></li>
+</ul>
+</section><section id="step-3-look-at-the-help-file" class="slide level2">
+<h2>Step 3: Look at the help file</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>?rename</span></code></pre></div>
+</section><section id="step-4-code" class="slide level2">
+<h2>Step 4: Code</h2>
+<p>Sometimes, it’s easier to work toward a solution using a smaller, made-up dataset. Then, you can use that technique onto your own dataset. If you like, use this:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>testing_ds &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">column_1 =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>),</span>
+<span id="cb14-2"><a href="#cb14-2"></a>                      <span class="dt">column_2 =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span></code></pre></div>
+<ul>
+<li class="fragment"><strong>Practice:</strong> try implementing one solution</li>
+<li class="fragment"><em>Sometimes you have to go back and redo steps 1 ~ 4</em></li>
+</ul>
+</section><section id="step-5-feel-proud-of-yourself" class="slide level2">
+<h2>Step 5: Feel proud of yourself</h2>
+<ul>
+<li class="fragment"><em>seriously</em></li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">neigh_strength =</span> hp)</span></code></pre></div>
+<pre><code>##                    mpg cyl  disp neigh_strength drat    wt  qsec vs am gear
+## Mazda RX4         21.0   6 160.0            110 3.90 2.620 16.46  0  1    4
+## Mazda RX4 Wag     21.0   6 160.0            110 3.90 2.875 17.02  0  1    4
+## Datsun 710        22.8   4 108.0             93 3.85 2.320 18.61  1  1    4
+## Hornet 4 Drive    21.4   6 258.0            110 3.08 3.215 19.44  1  0    3
+## Hornet Sportabout 18.7   8 360.0            175 3.15 3.440 17.02  0  0    3
+## Valiant           18.1   6 225.0            105 2.76 3.460 20.22  1  0    3
+## Duster 360        14.3   8 360.0            245 3.21 3.570 15.84  0  0    3
+## Merc 240D         24.4   4 146.7             62 3.69 3.190 20.00  1  0    4
+## Merc 230          22.8   4 140.8             95 3.92 3.150 22.90  1  0    4
+## Merc 280          19.2   6 167.6            123 3.92 3.440 18.30  1  0    4
+##                   carb
+## Mazda RX4            4
+## Mazda RX4 Wag        4
+## Datsun 710           1
+## Hornet 4 Drive       1
+## Hornet Sportabout    2
+## Valiant              1
+## Duster 360           4
+## Merc 240D            2
+## Merc 230             2
+## Merc 280             4</code></pre>
+</section></section>
+<section><section id="part-iii-common-errors" class="title-slide slide level1"><h1>Part III: Common Errors</h1><ol type="1">
+<li>Function not found</li>
+<li>Object not found</li>
+<li>Non-numeric argument to a binary operator</li>
+<li>RS (It’s like ‘BS’ but for R)</li>
+</ol></section><section id="function-not-found" class="slide level2">
+<h2>1) Function not found</h2>
+<p><font size="5"> Example 1:</font size></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="st">  </span><span class="kw">remane</span>(<span class="dt">weight =</span> wt)</span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="co">## Error in remane(., weight = wt): could not find function &quot;remane&quot;</span></span></code></pre></div>
+<p><font size ="5"> Example 2: </font size></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">principal</span>(mtcars, <span class="dt">nfactors =</span> <span class="dv">2</span>)</span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="co">## Error in principal(mtcars, nfactors = 2): could not find function &quot;principal&quot;</span></span></code></pre></div>
+<p><font size ="5"></p>
+<ul>
+<li class="fragment">Lessons:
+<ul>
+<li class="fragment">Check spelling</li>
+<li class="fragment">Load libraries </font size></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>In the first example, we see that I made a spelling mistake. Easy fix!</p>
+In the second example, I did not make a spelling error, but it still does not work?? Why! Because I did not load the library(psych) which calls to principal; Remember: check spelling, and check libraries!
+</aside>
+</section><section id="object-not-found" class="slide level2">
+<h2>2) Object not found</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>mtcars <span class="op">%&gt;%</span><span class="st">  </span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">weight =</span> tw)</span></code></pre></div>
+<pre><code>## Error: Can&#39;t rename columns that don&#39;t exist.
+## [31mx[39m Column `tw` doesn&#39;t exist.</code></pre>
+<ul>
+<li class="fragment">Lesson:
+<ul>
+<li class="fragment">Check spelling</li>
+<li class="fragment">Check your codebook</li>
+</ul></li>
+</ul>
+</section><section id="non-numeric-argument-to-a-binary-operator" class="slide level2">
+<h2>3) Non-numeric argument to a binary operator</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="dt">var =</span> <span class="st">&quot;make_model&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">make_model =</span> make_model <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## Error: Problem with `mutate()` input `make_model`.
+## x non-numeric argument to binary operator
+## i Input `make_model` is `make_model + 1`.</code></pre>
+<ul>
+<li class="fragment">Lessons:
+<ul>
+<li class="fragment">Check your codebook</li>
+<li class="fragment">Know your data structure</li>
+</ul></li>
+</ul>
+</section><section id="rs-its-like-bs-but-for-r" class="slide level2">
+<h2>4) RS (It’s like ‘BS’ but for R)</h2>
+<p>Sometimes, you think you’ve done everything right, and it <em>still</em> won’t work.</p>
+<center>
+<img data-src="Figures/restart%20R.png" alt="rs" />
+</center>
+<ul>
+<li class="fragment">In this case, check to see if package is installed</li>
+<li class="fragment">If yes, then, turn it off and turn it on again
+<ul>
+<li class="fragment">I’m serious…</li>
+<li class="fragment">Hence “R.S.”</li>
+</ul></li>
+</ul>
+</section></section>
+<section id="mid-late-session-questions" class="title-slide slide level1"><h1>Mid-Late Session Questions?</h1></section>
+<section><section id="practice" class="title-slide slide level1"><h1>Practice</h1><p>Recap:</p>
+<ol type="1">
+<li>Google</li>
+<li>Find (Potential) Solution</li>
+<li>Help File</li>
+<li>Code (Repeat 1 ~ 4 as needed)</li>
+<li>Feel Proud!</li>
+</ol></section><section id="practice-i-intermediate" class="slide level2">
+<h2>Practice I: Intermediate</h2>
+<p><strong>Practice:</strong> Changing the format of start and/or end date</p>
+<ul>
+<li class="fragment">copy and paste your third row when done</li>
+</ul>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>practice1 &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;Solving-programming-problems-in-R-on-your-own/practice_ds.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   emotion = col_character(),
+##   number = col_double(),
+##   letter = col_character(),
+##   zodiac = col_character(),
+##   start_date = col_character(),
+##   end_date = col_character()
+## )</code></pre>
+<ul>
+<li class="fragment"><em>Hint</em>: <code>as.Date</code></li>
+</ul>
+</section><section id="practice-i-one-solution" class="slide level2">
+<h2>Practice I: (One) Solution</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>test &lt;-<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;19-Mar&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;%d-%B&quot;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="kw">format</span>(test, <span class="dt">format =</span> <span class="st">&quot;%d-%B&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;19-March&quot;</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>practice1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">start_date =</span> <span class="kw">as.Date</span>(start_date, </span>
+<span id="cb27-3"><a href="#cb27-3"></a>                              <span class="dt">format =</span> <span class="st">&quot;%d-%B&quot;</span>) </span>
+<span id="cb27-4"><a href="#cb27-4"></a>         <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">format</span>(., <span class="dt">format =</span> <span class="st">&quot;%d-%m&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="st">  </span><span class="kw">slice</span>(<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 6
+##   emotion number letter zodiac start_date end_date
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;   
+## 1 silly        3 c      gemini 21-05      20-Jun</code></pre>
+</section><section id="practice-i-two-different-google-searches" class="slide level2">
+<h2>Practice I: Two Different Google Searches</h2>
+<center>
+<img data-src="Figures/simple%20search.png" width="460" alt="simple search" /> <img data-src="Figures/complicated%20search.png" width="460" alt="complicated search" />
+</center>
+<p><a href="https://www.google.com/search?q=convert+dates+in+R&oq=conver&aqs=chrome.0.69i59l2j69i57j69i60j69i65l2j69i60.993j0j1&sourceid=chrome&ie=UTF-8">Simple Search</a></p>
+</section><section id="practice-ii-advanced" class="slide level2">
+<h2>Practice II: Advanced</h2>
+<p><strong>Practice:</strong> How would you compare PCA with <code>promax</code> or <code>varimax</code> rotations in SPSS to R?</p>
+<aside class="notes">
+<ol type="1">
+<li>We would want to see if we can find any information on differences between the two “spss pca in R”</li>
+</ol>
+<ul>
+<li><p><a href="https://stats.stackexchange.com/questions/105028/difference-in-pca-loadings-between-r-and-spss" class="uri">https://stats.stackexchange.com/questions/105028/difference-in-pca-loadings-between-r-and-spss</a> (eigenvalues differ)</p></li>
+<li><p><a href="https://stats.stackexchange.com/questions/59213/how-to-compute-varimax-rotated-principal-components-in-r" class="uri">https://stats.stackexchange.com/questions/59213/how-to-compute-varimax-rotated-principal-components-in-r</a> (note: for Varimax in R normalize = TRUE, eps = 1e-5, is this the same in SPSS; what is eps)</p></li>
+</ul>
+<p>?psych::pca on eps - <a href="https://www.personality-project.org/r/html/principal.html" class="uri">https://www.personality-project.org/r/html/principal.html</a></p>
+<p>seems to be two different things ‘Varimax’ vs “varimax”</p>
+</aside>
+</section></section>
+<section id="thank-you" class="title-slide slide level1"><h1>Thank you!</h1></section>
+    </div>
+  </div>
+
+  <script src="Solving-programming-problems-in-R-on-your-own_files/reveal.js-3.3.0.1/lib/js/head.min.js"></script>
+  <script src="Solving-programming-problems-in-R-on-your-own_files/reveal.js-3.3.0.1/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+
+
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'Solving-programming-problems-in-R-on-your-own_files/reveal.js-3.3.0.1/plugin/notes/notes.js', async: true },
+        ]
+      });
+    </script>
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+
+<script>
+  (function() {
+    if (window.jQuery) {
+      Reveal.addEventListener( 'slidechanged', function(event) {  
+        window.jQuery(event.previousSlide).trigger('hidden');
+        window.jQuery(event.currentSlide).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+
+  </body>
+</html>
