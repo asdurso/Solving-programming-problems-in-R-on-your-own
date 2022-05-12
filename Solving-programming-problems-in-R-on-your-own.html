@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="AS d’Urso" />
-  <meta name="dcterms.date" content="2021-07-12" />
+  <meta name="dcterms.date" content="2022-05-12" />
   <title>Solving Programming Problems in R on Your Own</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -510,7 +510,7 @@ style.innerHTML = style_script;
 document.getElementsByTagName('head')[0].appendChild(style);
 </script>
 
-    <script src="Solving-programming-problems-in-R-on-your-own_files/header-attrs-2.7/header-attrs.js"></script>
+    <script src="Solving-programming-problems-in-R-on-your-own_files/header-attrs-2.11/header-attrs.js"></script>
 </head>
 <body>
   <div class="reveal">
@@ -519,7 +519,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section>
     <h1 class="title">Solving Programming Problems in R on Your Own</h1>
     <h2 class="author">AS d’Urso</h2>
-    <h3 class="date"><small>2021-07-12</small></h3>
+    <h3 class="date"><small>2022-05-12</small></h3>
 </section>
 
 <section id="introduction" class="title-slide slide level1">
@@ -626,9 +626,13 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section id="phone-a-friend" class="slide level2">
 <h2>4) Phone a Friend</h2>
 <ul>
-<li>Colleagues</li>
-<li>Twitter</li>
+<li class="fragment">Colleagues</li>
+<li class="fragment"><a href="https://www.it.northwestern.edu/research/index.html">Northwestern Research Computing Services</a></li>
+<li class="fragment">Twitter</li>
 </ul>
+<center>
+<img class="fragment" src="Figures/twitter.jpeg" height="475"> </img>
+</center>
 </section></section>
 <section>
 <section id="part-ii-steps-to-solving-problems" class="title-slide slide level1">
@@ -775,8 +779,9 @@ In the second example, I did not make a spelling error, but it still does not wo
 <h2>2) Object not found</h2>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span>  </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">weight =</span> tw)</span></code></pre></div>
-<pre><code>## Error: Can&#39;t rename columns that don&#39;t exist.
-## x Column `tw` doesn&#39;t exist.</code></pre>
+<pre><code>## Error in `chr_as_locations()`:
+## ! Can&#39;t rename columns that don&#39;t exist.
+## ✖ Column `tw` doesn&#39;t exist.</code></pre>
 <ul>
 <li class="fragment">Lesson:
 <ul>
@@ -790,9 +795,10 @@ In the second example, I did not make a spelling error, but it still does not wo
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">&quot;make_model&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">make_model =</span> make_model <span class="sc">+</span> <span class="dv">1</span>)</span></code></pre></div>
-<pre><code>## Error: Problem with `mutate()` input `make_model`.
-## x non-numeric argument to binary operator
-## i Input `make_model` is `make_model + 1`.</code></pre>
+<pre><code>## Error in `mutate()`:
+## ! Problem while computing `make_model = make_model + 1`.
+## Caused by error in `make_model + 1`:
+## ! non-numeric argument to binary operator</code></pre>
 <ul>
 <li class="fragment">Lessons:
 <ul>
@@ -804,7 +810,7 @@ In the second example, I did not make a spelling error, but it still does not wo
 <section id="file-does-not-exist" class="slide level2">
 <h2>4) File does not exist</h2>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>practice_dat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;practice_ds.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## Error: &#39;practice_ds.csv&#39; does not exist in current working directory (&#39;C:/Users/ajadi/OneDrive/Work/Teaching&#39;).</code></pre>
+<pre><code>## Error: &#39;practice_ds.csv&#39; does not exist in current working directory (&#39;/Users/amanda/Library/CloudStorage/OneDrive-Personal/Work/Teaching&#39;).</code></pre>
 <ul>
 <li class="fragment">Lessons:
 <ul>
@@ -847,16 +853,14 @@ In the second example, I did not make a spelling error, but it still does not wo
 <li class="fragment">copy and paste your third row when done</li>
 </ul>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>practice1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Solving-programming-problems-in-R-on-your-own/practice_ds.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
-## -- Column specification --------------------------------------------------------
-## cols(
-##   emotion = col_character(),
-##   number = col_double(),
-##   letter = col_character(),
-##   zodiac = col_character(),
-##   start_date = col_character(),
-##   end_date = col_character()
-## )</code></pre>
+<pre><code>## Rows: 12 Columns: 6
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (5): emotion, letter, zodiac, start_date, end_date
+## dbl (1): number
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <ul>
 <li class="fragment"><em>Hint</em>: <code>as.Date</code></li>
 </ul>
@@ -871,7 +875,7 @@ In the second example, I did not make a spelling error, but it still does not wo
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">format =</span> <span class="st">&quot;%d-%B&quot;</span>) </span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>         <span class="sc">%&gt;%</span> <span class="fu">format</span>(., <span class="at">format =</span> <span class="st">&quot;%d-%m&quot;</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 6
+<pre><code>## # A tibble: 1 × 6
 ##   emotion number letter zodiac start_date end_date
 ##   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;   
 ## 1 silly        3 c      gemini 21-05      20-Jun</code></pre>
@@ -925,14 +929,52 @@ In the second example, I did not make a spelling error, but it still does not wo
       // Full list of configuration options available at:
       // https://github.com/hakimel/reveal.js#configuration
       Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+        // Display a presentation progress bar
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: false,
         // Push each slide change to the browser history
         history: true,
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+        // Enable the slide overview mode
+        overview: true,
         // Vertical centering of slides
         center: false,
+        // Enables touch navigation on devices with touch input
+        touch: true,
+        // Loop the presentation
+        loop: false,
+        // Change the presentation direction to be RTL
+        rtl: false,
+        // Turns fragments on and off globally
+        fragments: true,
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
         // Transition style
         transition: 'default', // none/fade/slide/convex/concave/zoom
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
         // Transition style for full page slide backgrounds
         backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
 
 
 
