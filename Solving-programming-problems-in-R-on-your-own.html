@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="AS d’Urso" />
-  <meta name="dcterms.date" content="2022-05-12" />
+  <meta name="dcterms.date" content="2022-05-13" />
   <title>Solving Programming Problems in R on Your Own</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -519,7 +519,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section>
     <h1 class="title">Solving Programming Problems in R on Your Own</h1>
     <h2 class="author">AS d’Urso</h2>
-    <h3 class="date"><small>2022-05-12</small></h3>
+    <h3 class="date"><small>2022-05-13</small></h3>
 </section>
 
 <section id="introduction" class="title-slide slide level1">
@@ -852,7 +852,7 @@ In the second example, I did not make a spelling error, but it still does not wo
 <ul>
 <li class="fragment">copy and paste your third row when done</li>
 </ul>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>practice1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Solving-programming-problems-in-R-on-your-own/practice_ds.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>practice1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Solving-programming-problems-in-R-on-your-own/Data/practice_ds.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 12 Columns: 6
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -889,30 +889,34 @@ In the second example, I did not make a spelling error, but it still does not wo
 </section>
 <section id="practice-ii-advanced" class="slide level2">
 <h2>Practice II: Advanced</h2>
-<p><strong>Practice:</strong> How would you compare PCA with <code>promax</code> or <code>varimax</code> rotations in SPSS to R?</p>
+<p><strong>Practice:</strong> Create weights for your survey, <code>practice_ds2.csv</code>, from the 2020 ANES</p>
 <ul>
-<li class="fragment">We would want to see if we can find any information on differences between the two “spss pca in R”</li>
-<li class="fragment"><a href="https://stats.stackexchange.com/questions/105028/difference-in-pca-loadings-between-r-and-spss" class="uri">https://stats.stackexchange.com/questions/105028/difference-in-pca-loadings-between-r-and-spss</a> <strong>(eigenvalues differ)</strong></li>
-</ul>
-<ul>
-<li class="fragment"><a href="https://stats.stackexchange.com/questions/59213/how-to-compute-varimax-rotated-principal-components-in-r" class="uri">https://stats.stackexchange.com/questions/59213/how-to-compute-varimax-rotated-principal-components-in-r</a></li>
-</ul>
-<ul>
-<li class="fragment"><strong>(note: for Varimax in R normalize = TRUE, eps = 1e-5, is this the same in SPSS; what is eps?)</strong></li>
+<li class="fragment">Tips, use the <code>pewmethods</code> and <code>anesrake</code> packages.</li>
+<li class="fragment">You can either do the code, or write out the steps.</li>
 </ul>
 </section>
-<section id="practice-ii-advanced-continued" class="slide level2">
-<h2>Practice II: Advanced (Continued…)</h2>
-<p><strong>Practice (Continued):</strong> How would you compare PCA with <code>promax</code> or <code>varimax</code> rotations in SPSS to R?</p>
+<section id="practice-ii-tips" class="slide level2">
+<h2>Practice II: TIPS</h2>
 <ul>
-<li class="fragment">?psych::pca on eps</li>
+<li>Some help: pid7 = V201231x, gender = V201600, age = V201507x, weight = V200010a</li>
 </ul>
-<ul>
-<li class="fragment"><a href="https://www.personality-project.org/r/html/principal.html" class="uri">https://www.personality-project.org/r/html/principal.html</a></li>
-</ul>
-<ul>
-<li class="fragment"><strong><em>seems to be two different things ‘Varimax’ vs “varimax”</em></strong></li>
-</ul>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Easily get targets </span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>targets <span class="ot">&lt;-</span> pewmethods<span class="sc">::</span><span class="fu">create_raking_targets</span>(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  anes_recode,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">vars =</span> <span class="fu">c</span>(</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;pid&quot;</span>,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;age&quot;</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;gender&quot;</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">wt =</span> <span class="st">&quot;weight&quot;</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>raking <span class="ot">&lt;-</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anesrake</span>(weighting_targets, </span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>           practice_ds2, </span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>           practice_ds2<span class="sc">$</span>caseid, </span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 </section></section>
 <section id="thank-you" class="title-slide slide level1">
 <h1>Thank you!</h1>
